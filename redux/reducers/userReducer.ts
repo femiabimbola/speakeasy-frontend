@@ -32,6 +32,8 @@ const userSlice = createSlice({
   reducers: {
   },
 
+  extraReducers: (builder) => {}
+
 })
 
 export default userSlice.reducer;
