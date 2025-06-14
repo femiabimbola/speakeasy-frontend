@@ -16,7 +16,10 @@ import CardWrapper from "@/components/CardWrapper";
 import {useState, useTransition} from "react";
 import {useRouter} from "next/navigation";
 import { FormSuccess, FormError } from "@/components/FormMessage";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { useAppDispatch } from "@/redux/hooks";
+import { createUser } from "@/redux/actions/userAction";
 
 export const RegisterSchema = z.object({
   email: z
@@ -32,6 +35,7 @@ export const RegisterForm = () => {
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const dispatch = useAppDispatch();
  
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
@@ -44,8 +48,8 @@ export const RegisterForm = () => {
     setSuccess("");
     startTransition(async() => {
       try {
-        console.log(`${process.env.NEXT_PUBLIC_BACKEND_URL}`)
-        const {data} = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/register`, values)
+        // const {data} = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/register`, values)
+        const {data} = await dispatch(createUser(values)).unwrap();
         setSuccess(data.message);
        router.push('/login')
       } catch (error: any) {
