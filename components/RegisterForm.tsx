@@ -44,10 +44,8 @@ export const RegisterForm = () => {
     setSuccess("");
     startTransition(async() => {
       try {
-        
-        console.log(`${process.env.BACKEND_URL}`)
+        console.log(`${process.env.NEXT_PUBLIC_BACKEND_URL}`)
         const {data} = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/register`, values)
-   
         setSuccess(data.message);
        router.push('/login')
       } catch (error: any) {
@@ -111,6 +109,7 @@ export const RegisterForm = () => {
                           {...field}
                           placeholder="Enter your email"
                           type="email"
+                          disabled={isPending}
                         />
                       </FormControl>
                       <FormMessage />
@@ -128,6 +127,7 @@ export const RegisterForm = () => {
                           {...field}
                           placeholder="Enter your email"
                           type="password"
+                          disabled={isPending}
                         />
                       </FormControl>
                       <FormMessage />

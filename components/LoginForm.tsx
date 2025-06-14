@@ -28,7 +28,7 @@ const LoginSchema = z.object({
   password: z.string().min(1, { message: "Password is required" }),
 });
 
-export const LoginForm = ({onLoginSuccess}: any) => {
+export const LoginForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -47,7 +47,11 @@ export const LoginForm = ({onLoginSuccess}: any) => {
         const {data} = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`, values, {withCredentials:true})
         console.log(data)
         setSuccess(data.message);
-        // onLoginSuccess(data)
+        if (data.data.userPreferences.twoFactorSecret === null) {
+          router.push("/setup2fa");
+        }else {
+          router.push("/verify2fa");
+        }
       } catch (error:any) {
         setError(error.response.data.message)
       }
