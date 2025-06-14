@@ -21,7 +21,7 @@ import Link from "next/link";
 import { FormError, FormSuccess } from "./FormMessage";
 import { useRouter } from "next/navigation";
 
-const LoginSchema = z.object({
+export const LoginSchema = z.object({
   email: z
     .string({ invalid_type_error: "Must be a string" })
     .email({ message: "Valid email is required" }),
@@ -47,11 +47,11 @@ export const LoginForm = () => {
         const {data} = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`, values, {withCredentials:true})
         console.log(data)
         setSuccess(data.message);
-        if (data.data.userPreferences.twoFactorSecret === null) {
-          router.push("/setup2fa");
-        }else {
-          router.push("/verify2fa");
-        }
+        // if (data.data.userPreferences.twoFactorSecret === null) {
+        //   router.push("/setup2fa");
+        // }else {
+        //   router.push("/verify2fa");
+        // }
       } catch (error:any) {
         setError(error.response.data.message)
       }

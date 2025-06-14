@@ -18,7 +18,7 @@ import {useRouter} from "next/navigation";
 import { FormSuccess, FormError } from "@/components/FormMessage";
 import axios from "axios";
 
-const RegisterSchema = z.object({
+export const RegisterSchema = z.object({
   email: z
     .string({ invalid_type_error: "Must be a string" })
     .email({ message: "Valid email is required" }),
