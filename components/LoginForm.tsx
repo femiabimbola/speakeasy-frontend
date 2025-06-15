@@ -20,6 +20,8 @@ import axios from "axios";
 import Link from "next/link";
 import { FormError, FormSuccess } from "./FormMessage";
 import { useRouter } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { loginUser } from "@/redux/actions/userAction";
 
 export const LoginSchema = z.object({
   email: z
@@ -33,6 +35,8 @@ export const LoginForm = () => {
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const { loading, user} = useAppSelector((state: any) => state.user);
+  const dispatch = useAppDispatch();
   
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -42,16 +46,19 @@ export const LoginForm = () => {
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     setError("");
     setSuccess("");
+     console.log("The user before",user)
     startTransition( async() => {
       try {
-        const {data} = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`, values, {withCredentials:true})
+        // const {data} = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`, values, {withCredentials:true})
+        const data = await dispatch(loginUser(values)).unwrap();
         console.log(data)
+        console.log("The user after", user)
         setSuccess(data.message);
-        // if (data.data.userPreferences.twoFactorSecret === null) {
-        //   router.push("/setup2fa");
-        // }else {
-        //   router.push("/verify2fa");
-        // }
+        if (data.data.userPreferences.twoFactorSecret === null) {
+          router.push("/setup2fa");
+        }else {
+          router.push("/verify2fa");
+        }
       } catch (error:any) {
         setError(error.response.data.message)
       }
