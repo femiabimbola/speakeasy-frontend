@@ -1,7 +1,7 @@
+import { Verify } from "@/components/Verify2FA";
+
 const Verify2FA = () => {
-  return (
-   <div> The Verify 2fa</div>
-  )
+  return <Verify /> 
 }
 
-export default Verify2FA;
+export default Verify2FA
