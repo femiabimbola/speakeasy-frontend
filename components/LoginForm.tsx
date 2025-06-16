@@ -31,12 +31,14 @@ export const LoginSchema = z.object({
 });
 
 export const LoginForm = () => {
+
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
-  const { loading, user} = useAppSelector((state: any) => state.user);
+ 
   const dispatch = useAppDispatch();
+  const { loading, user} = useAppSelector((state: any) => state.user);
   
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
