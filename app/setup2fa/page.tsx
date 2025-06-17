@@ -4,9 +4,10 @@ import { cookies } from 'next/headers';
 const setup2FA =  async () => {
 
   const cookieStore = await cookies(); 
-  const sessionToken = cookieStore.get('token')?.value;
+  const sessionToken = cookieStore.get('token')?.value
+
   return ( 
-  <Setup2fa   sessionToken={sessionToken}/>
+  <Setup2fa  sessionToken={sessionToken}/>
 )
 }
 

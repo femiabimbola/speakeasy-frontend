@@ -51,18 +51,17 @@ export const LoginForm = () => {
      console.log("The user before",user)
     startTransition( async() => {
       try {
-        // const {data} = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`, values, {withCredentials:true})
         const data = await dispatch(loginUser(values)).unwrap();
         console.log(data)
         console.log("The user after", user)
         setSuccess(data.message);
-        if (data.data.userPreferences.twoFactorSecret === null) {
-          router.push("/setup2fa");
-        }else {
-          router.push("/verify2fa");
-        }
+        // if (data.data.userPreferences.twoFactorSecret === null) {
+        //   router.push("/setup2fa");
+        // }else {
+        //   router.push("/verify2fa");
+        // }
       } catch (error:any) {
-        setError(error.response.data.message)
+        setError(error)
       }
     }
     )

@@ -48,12 +48,11 @@ export const RegisterForm = () => {
     setSuccess("");
     startTransition(async() => {
       try {
-        // const {data} = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/register`, values)
         const {data} = await dispatch(createUser(values)).unwrap();
         setSuccess(data.message);
        router.push('/login')
       } catch (error: any) {
-        setError(error.response.data.message)
+        setError(error)
       }
     })
   };

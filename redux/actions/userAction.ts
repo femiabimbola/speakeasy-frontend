@@ -7,9 +7,10 @@ import { z } from "zod";
 
 export const createUser = createAsyncThunk('user/createUser', async (values: z.infer<typeof RegisterSchema>, { rejectWithValue } )=>{
   try {
-      const user = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/register`, values)
+      const user = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/register`, values, {withCredentials:true})
       return user.data
   } catch (error: any) {
+    console.log(error.response?.data?.message)
     return rejectWithValue(error.response?.data?.message || 'Registration failed');
   }
 })

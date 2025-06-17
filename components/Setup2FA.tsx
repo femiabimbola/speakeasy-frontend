@@ -2,19 +2,21 @@
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export const Setup2fa = ({sessionToken}: {sessionToken: string | undefined}) => {
   const { loading, user} = useAppSelector((state: any) => state.user);
   const router = useRouter();
- 
-  // const getAccessToken = (): string | null => {
-  //   // return getCookie('accessToken');
-  // };
-  if(!sessionToken ) router.push("/login");
-   console.log(user)
+
+   useEffect(() => {
+    if (!sessionToken) {
+      router.push("/login");
+    }
+  }, [sessionToken]);
+
   return (
     <div> 
-      <p> The user is {user}</p>
+      {/* <p> The user is {user}</p> */}
       The Set Up 2FA
       
     </div>
