@@ -14,9 +14,10 @@ export const Setup2fa = ({sessionToken}: {sessionToken: string | undefined}) => 
     }
   }, [sessionToken]);
 
+  console.log("Current User State:", user)
   return (
     <div> 
-      {/* <p> The user is {user}</p> */}
+      <p> The user is {user}</p>
       The Set Up 2FA
       
     </div>

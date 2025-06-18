@@ -5,20 +5,24 @@ import axios from "axios";
 import { z } from "zod";
 
 
-export const createUser = createAsyncThunk('user/createUser', async (values: z.infer<typeof RegisterSchema>, { rejectWithValue } )=>{
+export const createUser = createAsyncThunk('user/createUser', async (values: z.infer<typeof RegisterSchema>, { rejectWithValue }) => {
   try {
-      const user = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/register`, values, {withCredentials:true})
-      return user.data
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/register`, values, {withCredentials:true})
+      console.log("API Response:", response.data);
+      return response.data.data
   } catch (error: any) {
-    console.log(error.response?.data?.message)
     return rejectWithValue(error.response?.data?.message || 'Registration failed');
   }
 })
 
-export const loginUser = createAsyncThunk('user/loginUser', async (values: z.infer<typeof LoginSchema>,{ rejectWithValue } )=>{
+export const loginUser = createAsyncThunk('user/loginUser', async (values: z.infer<typeof LoginSchema>, { rejectWithValue } )=>{
   try {
-      const user = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`, values, {withCredentials:true})
-      return user.data
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`, values, {withCredentials:true})
+      // return response.data
+      return {
+        user: response.data.data,
+        message: response.data.message,
+      };
   } catch (error: any) {
     return rejectWithValue(error.response?.data?.message || 'Login failed');
   }

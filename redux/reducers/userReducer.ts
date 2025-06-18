@@ -3,20 +3,23 @@ import { createUser, loginUser } from "../actions/userAction";
 
 interface User {
   user: {
+    createdAt?: string;
+    
     email: string | null;
     firstName: string | null;
     isEmailVerified: boolean;
     lastName: string | null;
     role: "USER" | string;
     userPreferences: {
-      emailNotification: boolean;
       enable2FA: boolean;
+      emailNotification: boolean;
       twoFactorSecret: string | null;
     };
+    _id:string;
   } | null;
-
   isLoading: boolean;
   error: string | null;
+  // message: string | null;
 }
 
 const initialState: User = {
@@ -42,17 +45,21 @@ const userSlice = createSlice({
         state.isLoading = true;
         state.error = null;
       })
+
       .addCase(loginUser.fulfilled, (state, action) => {
+        console.log("Login Fulfilled Payload:", action.payload.user);
         state.isLoading = false;
-        state.user = action.payload;
+        state.user = action.payload.user;
+        console.log("The state user",state.user)
         state.error = null;
       })
+
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
       })
       
-      // Register cases
+      // Register cases You are to remove it 
       .addCase(createUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;

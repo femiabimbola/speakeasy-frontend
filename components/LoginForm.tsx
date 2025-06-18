@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {useState, useTransition} from "react";
 import { Button } from "@/components/ui/button";
+import { RootState } from "@/redux/store";
 import {
   Form,
   FormControl,
@@ -38,7 +39,7 @@ export const LoginForm = () => {
   const router = useRouter();
  
   const dispatch = useAppDispatch();
-  const { loading, user} = useAppSelector((state: any) => state.user);
+  const { isLoading, user} = useAppSelector((state: RootState) => state.user);
   
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -48,14 +49,12 @@ export const LoginForm = () => {
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     setError("");
     setSuccess("");
-     console.log("The user before",user)
+
     startTransition( async() => {
       try {
         const data = await dispatch(loginUser(values)).unwrap();
-        console.log(data)
-        console.log("The user after", user)
         setSuccess(data.message);
-        // if (data.data.userPreferences.twoFactorSecret === null) {
+        // if (data.user.userPreferences.twoFactorSecret === null) {
         //   router.push("/setup2fa");
         // }else {
         //   router.push("/verify2fa");
@@ -66,6 +65,8 @@ export const LoginForm = () => {
     }
     )
   };
+
+  console.log("Current User State:", user)
 
   return (
     <div className="flex justify-center items-center h-full">
