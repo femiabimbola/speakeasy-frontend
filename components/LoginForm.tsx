@@ -17,8 +17,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import CardWrapper from "@/components/CardWrapper";
-import axios from "axios";
-import Link from "next/link";
 import { FormError, FormSuccess } from "./FormMessage";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
@@ -54,11 +52,11 @@ export const LoginForm = () => {
       try {
         const data = await dispatch(loginUser(values)).unwrap();
         setSuccess(data.message);
-        // if (data.user.userPreferences.twoFactorSecret === null) {
-        //   router.push("/setup2fa");
-        // }else {
-        //   router.push("/verify2fa");
-        // }
+        if (data.user.userPreferences.twoFactorSecret === null) {
+          router.push("/setup2fa");
+        }else {
+          router.push("/verify2fa");
+        }
       } catch (error:any) {
         setError(error)
       }

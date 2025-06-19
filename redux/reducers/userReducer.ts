@@ -60,19 +60,19 @@ const userSlice = createSlice({
       })
       
       // Register cases You are to remove it 
-      .addCase(createUser.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(createUser.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.user = action.payload;
-        state.error = null;
-      })
-      .addCase(createUser.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload as string;
-      });
+      // .addCase(createUser.pending, (state) => {
+      //   state.isLoading = true;
+      //   state.error = null;
+      // })
+      // .addCase(createUser.fulfilled, (state, action) => {
+      //   state.isLoading = false;
+      //   state.user = action.payload;
+      //   state.error = null;
+      // })
+      // .addCase(createUser.rejected, (state, action) => {
+      //   state.isLoading = false;
+      //   state.error = action.payload as string;
+      // });
   },
 });
 
