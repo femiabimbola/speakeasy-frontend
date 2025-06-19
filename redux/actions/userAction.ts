@@ -24,6 +24,15 @@ export const loginUser = createAsyncThunk('user/loginUser', async (values: z.inf
         message: response.data.message,
       };
   } catch (error: any) {
-    return rejectWithValue(error.response?.data?.message || 'Login failed');
+    return rejectWithValue(error.response?.data?.message || 'Login failed!');
+  }
+})
+
+export const getUser = createAsyncThunk('user/getUser', async ( _, { rejectWithValue  } )=>{
+  try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/status`)
+      return response.data
+  } catch (error: any) {
+    return rejectWithValue(error.response?.data?.message || 'Login failed!');
   }
 })
