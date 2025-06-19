@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createUser, loginUser } from "../actions/userAction";
+import { createUser, getUser, loginUser } from "../actions/userAction";
 
 interface User {
   user: {
@@ -73,6 +73,19 @@ const userSlice = createSlice({
       //   state.isLoading = false;
       //   state.error = action.payload as string;
       // });
+      .addCase(getUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        console.log("Get User Payload:", action.payload.user);
+        state.user = action.payload;
+      })
+      .addCase(getUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string || 'Failed to fetch user';
+      });
   },
 });
 
