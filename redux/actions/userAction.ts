@@ -31,7 +31,6 @@ export const loginUser = createAsyncThunk('user/loginUser', async (values: z.inf
 export const getUser = createAsyncThunk('user/getUser', async ( _, { rejectWithValue  } )=>{
   try {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/status`, { withCredentials: true })
-
       return response.data
   } catch (error: any) {
     return rejectWithValue(error.response?.data?.message || 'Failed to fetch user');
