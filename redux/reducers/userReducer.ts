@@ -41,23 +41,21 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     // Login cases
     builder
-      .addCase(loginUser.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
+      // .addCase(loginUser.pending, (state) => {
+      //   state.isLoading = true;
+      //   state.error = null;
+      // })
 
-      .addCase(loginUser.fulfilled, (state, action) => {
-        console.log("Login Fulfilled Payload:", action.payload.user);
-        state.isLoading = false;
-        state.user = action.payload.user;
-        console.log("The state user",state.user)
-        state.error = null;
-      })
+      // .addCase(loginUser.fulfilled, (state, action) => {
+      //   state.isLoading = false;
+      //   state.user = action.payload.user;
+      //   state.error = null;
+      // })
 
-      .addCase(loginUser.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload as string;
-      })
+      // .addCase(loginUser.rejected, (state, action) => {
+      //   state.isLoading = false;
+      //   state.error = action.payload as string;
+      // })
       
       // Register cases You are to remove it 
       // .addCase(createUser.pending, (state) => {
@@ -79,7 +77,7 @@ const userSlice = createSlice({
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        console.log("Get User Payload:", action.payload.user);
+        console.log("Get User Payload:", action.payload);
         state.user = action.payload;
       })
       .addCase(getUser.rejected, (state, action) => {

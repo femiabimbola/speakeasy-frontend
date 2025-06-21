@@ -14,7 +14,6 @@ export const Verify = () => {
   const fetchUser = async () => {
     try {
       const result = await dispatch(getUser()).unwrap();
-      console.log('User data:', result);
     } catch (error) {
       console.error('Error fetching user:', error);
     }

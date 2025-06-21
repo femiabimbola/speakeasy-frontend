@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export const Setup2fa = ({sessionToken}: {sessionToken: string | undefined}) => {
+  
   const { loading, user} = useAppSelector((state: any) => state.user);
   const router = useRouter();
 

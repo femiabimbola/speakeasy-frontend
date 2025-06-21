@@ -64,7 +64,7 @@ export const LoginForm = () => {
     )
   };
 
-  console.log("Current User State:", user)
+  console.log("The login User State:", user)
 
   return (
     <div className="flex justify-center items-center h-full">
