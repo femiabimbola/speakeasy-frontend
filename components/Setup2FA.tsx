@@ -74,7 +74,9 @@ export const Setup2fa = ({sessionToken}: {
              
               <div className="mx-auto">
                 {response && (
-                  <h3> Hi {user.firstName.charAt(0).toUpperCase()+ user.firstName.slice(1)}, scan with your authenticator application </h3>
+                  <h3>
+                     Hi <b>{user.firstName.charAt(0).toUpperCase()+ user.firstName.slice(1)}</b>, scan with your authenticator application 
+                  </h3>
                 )}
                 {response && (
                   <Image
