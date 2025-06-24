@@ -1,6 +1,8 @@
+import { UserDashboard } from "@/components/Dashboard";
+
 const Dashboard = () => {
   return (
-    <p> The User is</p>
+    <UserDashboard />
   )
 }
 
