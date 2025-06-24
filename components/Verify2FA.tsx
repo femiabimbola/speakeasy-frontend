@@ -7,9 +7,6 @@ import { useEffect } from "react";
 
 export const Verify = () => {
   const dispatch = useAppDispatch();
-  const { isLoading, user} = useAppSelector((state: RootState) => state.user)
-
-  console.log("Current User State:", user)
 
   const fetchUser = async () => {
     try {
@@ -23,7 +20,7 @@ export const Verify = () => {
     fetchUser()
   }, [])
   
-
+  const { isLoading, user} = useAppSelector((state: RootState) => state.user)
 
   return (
     <div>

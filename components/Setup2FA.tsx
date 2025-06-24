@@ -13,21 +13,21 @@ import { z } from "zod";
 import Image from "next/image";
 import axios from "axios";
 
-export const Setup2fa = ({
-  sessionToken,
-}: {
+export const Setup2fa = ({sessionToken}: {
   sessionToken: string | undefined;
 }) => {
+
   const dispatch = useAppDispatch();
-  const { loading, user } = useAppSelector((state: any) => state.user);
+  const router = useRouter();
+
   const [message, setMessage] = useState("");
   const [response, setResponse] = useState("");
+
+  const { loading, user } = useAppSelector((state: any) => state.user);
 
   const TwoFASchema = z.object({
     input: z.string({ invalid_type_error: "Must be a string" }),
   });
-
-  const router = useRouter();
 
   const fetchUser = async () => {
     try {
@@ -57,8 +57,10 @@ export const Setup2fa = ({
       router.push("/login");
     }
 
+    fetchQRcode()
     fetchUser();
-  }, [sessionToken, fetchQRcode]);
+  }, []);
+  console.log(user)
 
   return (
     <div className="flex justify-center items-center h-full">
@@ -67,11 +69,12 @@ export const Setup2fa = ({
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className=" flex flex-col gap-y-5">
               <h1 className="text-xl font-bold tracking-tight text-gray-900 text-center">
-                Activate Two Factor Authentication, 
+                Activate Two Factor Authentication
               </h1>
+             
               <div className="mx-auto">
                 {response && (
-                  <h3> Scan with your authenticator application </h3>
+                  <h3> Hi {user.firstName.charAt(0).toUpperCase()+ user.firstName.slice(1)}, scan with your authenticator application </h3>
                 )}
                 {response && (
                   <Image
