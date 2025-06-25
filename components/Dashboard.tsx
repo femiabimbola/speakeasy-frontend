@@ -5,21 +5,48 @@ import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Mail, User, Shield, Bell } from 'lucide-react';
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { getUser } from '@/redux/actions/userAction';
+import { useEffect } from 'react';
+import { RootState } from '@/redux/store';
 
-const user = {
-  email: 'jane.doe@example.com',
-  firstName: 'Jane',
-  lastName: 'Doe',
-  isEmailVerified: true,
-  role: 'USER',
-  userPreferences: {
-    enable2FA: true,
-    emailNotifications: false,
-    twoFactorSecret: null,
-  },
-};
+// const user = {
+//   email: 'jane.doe@example.com',
+//   firstName: 'Jane',
+//   lastName: 'Doe',
+//   isEmailVerified: true,
+//   role: 'USER',
+//   userPreferences: {
+//     enable2FA: true,
+//     emailNotifications: false,
+//     twoFactorSecret: null,
+//   },
+// };
 
-export const UserDashboard = () =>{
+
+
+export const UserDashboard = () => {
+
+  const dispatch = useAppDispatch();
+
+  const fetchUser = async () => {
+      try {
+        console.log("called")
+        const result = await dispatch(getUser()).unwrap();
+        console.log(result)
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+
+  useEffect(()=> {
+    fetchUser();
+  }, [])
+
+  const { isLoading, user} = useAppSelector((state: any) => state.user)
+
+  console.log(user)
+  
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-6xl mx-auto space-y-6">

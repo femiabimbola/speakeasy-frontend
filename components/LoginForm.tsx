@@ -37,7 +37,7 @@ export const LoginForm = () => {
   const router = useRouter();
  
   const dispatch = useAppDispatch();
-  const { isLoading, user} = useAppSelector((state: RootState) => state.user);
+  // const { isLoading, user} = useAppSelector((state: RootState) => state.user);
   
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -52,10 +52,10 @@ export const LoginForm = () => {
       try {
         const data = await dispatch(loginUser(values)).unwrap();
         setSuccess(data.message);
-        if (data.user.userPreferences.twoFactorSecret === null) {
-          router.push("/setup2fa");
-        }else {
+        if (data.user.userPreferences.enable2FA) {
           router.push("/verify2fa");
+        }else {
+          router.push("/dashboard");
         }
       } catch (error:any) {
         setError(error)
@@ -64,7 +64,7 @@ export const LoginForm = () => {
     )
   };
 
-  console.log("The login User State:", user)
+
 
   return (
     <div className="flex justify-center items-center h-full">
