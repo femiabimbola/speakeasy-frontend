@@ -1,14 +1,15 @@
-'use client';
+"use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Switch } from '@/components/ui/switch';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Mail, User, Shield, Bell } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Mail, User, Shield, Bell } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { getUser } from '@/redux/actions/userAction';
-import { useEffect } from 'react';
-import { RootState } from '@/redux/store';
+import { getUser } from "@/redux/actions/userAction";
+import { useEffect } from "react";
+import { RootState } from "@/redux/store";
+import { useRouter } from "next/navigation";
 
 // const user = {
 //   email: 'jane.doe@example.com',
@@ -23,36 +24,40 @@ import { RootState } from '@/redux/store';
 //   },
 // };
 
-
-
 export const UserDashboard = () => {
-
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const fetchUser = async () => {
-      try {
-        console.log("called")
-        const result = await dispatch(getUser()).unwrap();
-        console.log(result)
-      } catch (error) {
-        console.error("Error fetching user:", error);
-      }
-    };
+    try {
+      console.log("called");
+      const result = await dispatch(getUser()).unwrap();
+      console.log(result);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+    }
+  };
 
-  useEffect(()=> {
+  useEffect(() => {
+    console.log("use effect is called")
     fetchUser();
-  }, [])
+  }, []);
 
-  const { isLoading, user} = useAppSelector((state: any) => state.user)
+  const { isLoading, user } = useAppSelector((state: any) => state.user);
 
-  console.log(user)
-  
+  const set2fa = () => {
+    if(!user.userPreferences.enable2FA) router.push('/setup2fa')
+  }
+
+  if(!user) return <p> Loading...</p>
+ 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="min-h-screen p-6">
       <div className="max-w-6xl mx-auto space-y-6">
-        <h1 className="text-3xl font-bold text-gray-800">User Dashboard</h1>
+        <h1 className="text-3xl font-bold text-center text-white">User Dashboard</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
           {/* User Profile Card */}
           <Card className="col-span-1">
             <CardHeader>
@@ -71,11 +76,11 @@ export const UserDashboard = () => {
                 </h2>
                 <p className="text-gray-600 flex items-center justify-center gap-2">
                   <Mail className="w-4 h-4" />
-                  {user.email || 'No email provided'}
+                  {user.email || "No email provided"}
                 </p>
                 <Badge
                   className="mt-2"
-                  variant={user.role === 'USER' ? 'secondary' : 'default'}
+                  variant={user.role === "USER" ? "secondary" : "default"}
                 >
                   {user.role}
                 </Badge>
@@ -96,13 +101,15 @@ export const UserDashboard = () => {
                     <p className="font-medium">Email Verification</p>
                     <p className="text-sm text-gray-600">
                       {user.isEmailVerified
-                        ? 'Email is verified'
-                        : 'Email not verified'}
+                        ? "Email is verified"
+                        : "Email not verified"}
                     </p>
                   </div>
                 </div>
-                <Badge variant={user.isEmailVerified ? 'default' : 'destructive'}>
-                  {user.isEmailVerified ? 'Verified' : 'Unverified'}
+                <Badge
+                  variant={user.isEmailVerified ? "default" : "destructive"}
+                >
+                  {user.isEmailVerified ? "Verified" : "Unverified"}
                 </Badge>
               </div>
 
@@ -113,15 +120,12 @@ export const UserDashboard = () => {
                     <p className="font-medium">Two-Factor Authentication</p>
                     <p className="text-sm text-gray-600">
                       {user.userPreferences.enable2FA
-                        ? '2FA is enabled'
-                        : '2FA is disabled'}
+                        ? "2FA is enabled"
+                        : "2FA is disabled"}
                     </p>
                   </div>
                 </div>
-                <Switch
-                  checked={user.userPreferences.enable2FA}
-                  disabled
-                />
+                <Switch checked={user.userPreferences.enable2FA} onCheckedChange={set2fa} />
               </div>
 
               <div className="flex items-center justify-between">
@@ -131,14 +135,14 @@ export const UserDashboard = () => {
                     <p className="font-medium">Email Notifications</p>
                     <p className="text-sm text-gray-600">
                       {user.userPreferences.emailNotifications
-                        ? 'Notifications enabled'
-                        : 'Notifications disabled'}
+                        ? "Notifications enabled"
+                        : "Notifications disabled"}
                     </p>
                   </div>
                 </div>
                 <Switch
                   checked={user.userPreferences.emailNotifications}
-                  disabled
+                  // disabled
                 />
               </div>
             </CardContent>
@@ -146,5 +150,5 @@ export const UserDashboard = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
