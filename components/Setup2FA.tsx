@@ -45,7 +45,9 @@ export const Setup2fa = ({sessionToken}: {
     setResponse(data.data);
   };
 
-  const onSubmit = (values: z.infer<typeof TwoFASchema>) => {};
+  const onSubmit = (values: z.infer<typeof TwoFASchema>) => {
+    router.push("/verify2fa");
+  };
 
   const form = useForm<z.infer<typeof TwoFASchema>>({
     resolver: zodResolver(TwoFASchema),
