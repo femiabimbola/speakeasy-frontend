@@ -28,6 +28,7 @@ import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { FormError, FormSuccess } from "./FormMessage";
+import axios from "axios";
 
 const verifySchema = z.object({
   input: z.string().min(1, { message: "Password is required" }),
@@ -45,9 +46,11 @@ export const Verify = () => {
   const handleVerify = async () => {
     setError("")
     try {
-      
-    } catch (error) {
-      
+      console.log("Verify 3fa")
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/2fa/verify`, { otp }, { withCredentials: true })
+      router.push("/dashboard");
+    } catch (error: any) {
+      setError(error.response.data.message)
     }
   };
 
