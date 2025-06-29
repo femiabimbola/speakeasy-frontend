@@ -7,13 +7,16 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Mail, User, Shield, Bell } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { getUser } from "@/redux/actions/userAction";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
 import axios from "axios";
+import { FormError, FormSuccess } from "./FormMessage";
 
 
 export const UserDashboard = () => {
+   const [error, setError] = useState<string | undefined>("");
+   const [success, setSuccess] = useState<string | undefined>("");
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -45,6 +48,16 @@ export const UserDashboard = () => {
       router.push("/login")
     } catch (error: any) {
       // setError(error.response.data.message)
+    }
+  }
+
+  const reset2FA = async () => {
+    try {
+      const { data } = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/2fa/reset`, { withCredentials: true })
+      setSuccess(data.message);
+      router.push("/setup2fa")
+    } catch (error: any) {
+      setError(error.response.data.message)
     }
   }
 
@@ -84,6 +97,11 @@ export const UserDashboard = () => {
                   {user.role}
                 </Badge>
               </div>
+              <FormError message={error} />
+              <FormSuccess message={success} />
+              {user.userPreferences.enable2FA && 
+              <Button className="cursor-pointer" onClick={reset2FA}>Reset the 2fa</Button>
+              }
             </CardContent>
           </Card>
 
