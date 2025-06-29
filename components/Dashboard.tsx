@@ -8,21 +8,10 @@ import { Mail, User, Shield, Bell } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { getUser } from "@/redux/actions/userAction";
 import { useEffect } from "react";
-import { RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
+import { Button } from "./ui/button";
+import axios from "axios";
 
-// const user = {
-//   email: 'jane.doe@example.com',
-//   firstName: 'Jane',
-//   lastName: 'Doe',
-//   isEmailVerified: true,
-//   role: 'USER',
-//   userPreferences: {
-//     enable2FA: true,
-//     emailNotifications: false,
-//     twoFactorSecret: null,
-//   },
-// };
 
 export const UserDashboard = () => {
   const dispatch = useAppDispatch();
@@ -47,6 +36,16 @@ export const UserDashboard = () => {
 
   const set2fa = () => {
     if(!user.userPreferences.enable2FA) router.push('/setup2fa')
+  }
+
+  const signOut = async () => {
+    try {
+      const { data } = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/`, )
+      // setSuccess(data.message);
+      router.push("/login")
+    } catch (error: any) {
+      // setError(error.response.data.message)
+    }
   }
 
   if(!user) return <p> Loading...</p>
@@ -90,8 +89,9 @@ export const UserDashboard = () => {
 
           {/* Account Settings Card */}
           <Card className="col-span-2">
-            <CardHeader>
+            <CardHeader className=" flex justify-between">
               <CardTitle className="text-lg">Account Settings</CardTitle>
+              <Button className="cursor-pointer" onClick={signOut}> Logout</Button>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex items-center justify-between">
